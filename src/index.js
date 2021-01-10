@@ -90,6 +90,7 @@ import {
 } from './tools/annotation/index.js';
 import {
   BrushTool,
+  BrushCanTool,
   SphericalBrushTool,
   FreehandScissorsTool,
   RectangleScissorsTool,
@@ -227,6 +228,7 @@ const cornerstoneTools = {
   TextMarkerTool,
   // ~ Segmentation Tools
   BrushTool,
+  BrushCanTool,
   SphericalBrushTool,
   RectangleScissorsTool,
   FreehandScissorsTool,
@@ -336,6 +338,7 @@ export {
   TextMarkerTool,
   // ~ Segmentation Tools
   BrushTool,
+  BrushCanTool,
   SphericalBrushTool,
   RectangleScissorsTool,
   FreehandScissorsTool,
