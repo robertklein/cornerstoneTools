@@ -1,7 +1,7 @@
 import external from './../../externalModules.js';
 import { BaseBrushTool } from '../base';
 import { getModule } from './../../store/index.js';
-import { drawBrushPixels, getCircle } from '../../util/segmentation/index.js';
+import { drawBrushPixels, getEllipse } from '../../util/segmentation/index.js';
 import { getLogger } from '../../util/logger.js';
 
 const logger = getLogger('tools:BrushTool');
@@ -40,7 +40,12 @@ export default class BrushTool extends BaseBrushTool {
     const { configuration } = segmentationModule;
     const eventData = evt.detail;
     const element = eventData.element;
-    const { rows, columns } = eventData.image;
+    const {
+      rows,
+      columns,
+      columnPixelSpacing,
+      rowPixelSpacing,
+    } = eventData.image;
     const { x, y } = eventData.currentPoints.image;
 
     if (x < 0 || x > columns || y < 0 || y > rows) {
@@ -48,7 +53,15 @@ export default class BrushTool extends BaseBrushTool {
     }
 
     const radius = configuration.radius;
-    const pointerArray = getCircle(radius, rows, columns, x, y);
+    const pointerArray = getEllipse(
+      radius,
+      rows,
+      columns,
+      x,
+      y,
+      columnPixelSpacing,
+      rowPixelSpacing
+    );
 
     const { labelmap2D, labelmap3D, shouldErase } = this.paintEventData;
 

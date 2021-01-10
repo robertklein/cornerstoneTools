@@ -6,6 +6,7 @@ import {
   addToolState,
   getToolState,
   removeToolState,
+  clearToolState,
 } from './../../stateManagement/toolState.js';
 import toolStyle from './../../stateManagement/toolStyle.js';
 import toolColors from './../../stateManagement/toolColors.js';
@@ -29,6 +30,10 @@ import freehandUtils from '../../util/freehand/index.js';
 import { getLogger } from '../../util/logger.js';
 import throttle from '../../util/throttle';
 import { getModule } from '../../store/index';
+import { fillInsideFreehand } from '../segmentation/strategies';
+import { getDiffBetweenPixelData } from '../../util/segmentation';
+
+const { getters, setters } = getModule('segmentation');
 
 const logger = getLogger('tools:annotation:FreehandRoiTool');
 
@@ -1182,6 +1187,38 @@ export default class FreehandRoiTool extends BaseAnnotationTool {
 
     this.fireModifiedEvent(element, data);
     this.fireCompletedEvent(element, data);
+
+    const { labelmap2D, labelmap3D, currentImageIdIndex } = getters.labelmap2D(
+      element
+    );
+
+    const pixelData = labelmap2D.pixelData;
+    const previousPixeldata = pixelData.slice();
+
+    console.log(labelmap3D.activeSegmentIndex);
+    const operationData = {
+      points: data.handles.points,
+      pixelData,
+      segmentIndex: labelmap3D.activeSegmentIndex,
+      segmentationMixinType: `freehandSegmentationMixin`,
+    };
+
+    fillInsideFreehand(
+      { detail: { image: external.cornerstone.getImage(element) } },
+      operationData
+    );
+
+    const operation = {
+      imageIdIndex: currentImageIdIndex,
+      diff: getDiffBetweenPixelData(previousPixeldata, pixelData),
+    };
+
+    setters.pushState(element, [operation]);
+
+    // Invalidate the brush tool data so it is redrawn
+    setters.updateSegmentsOnLabelmap2D(labelmap2D);
+    clearToolState(element, 'FreehandRoi');
+    external.cornerstone.updateImage(element);
   }
 
   /**

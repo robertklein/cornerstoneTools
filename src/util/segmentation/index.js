@@ -8,6 +8,7 @@ import floodFill from './floodFill';
 import getBoundingBoxAroundCircle from './getBoundingBoxAroundCircle';
 import getBoundingBoxAroundPolygon from './getBoundingBoxAroundPolygon';
 import getCircle from './getCircle';
+import getEllipse from './getEllipse';
 import getPixelPathBetweenPixels from './getPixelPathBetweenPixels';
 import isSameSegment from './isSameSegment';
 import triggerLabelmapModifiedEvent from './triggerLabelmapModifiedEvent';
@@ -26,6 +27,7 @@ export {
   getBoundingBoxAroundCircle,
   getBoundingBoxAroundPolygon,
   getCircle,
+  getEllipse,
   getPixelPathBetweenPixels,
   isSameSegment,
   triggerLabelmapModifiedEvent,
