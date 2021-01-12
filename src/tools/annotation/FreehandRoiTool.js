@@ -1195,7 +1195,6 @@ export default class FreehandRoiTool extends BaseAnnotationTool {
     const pixelData = labelmap2D.pixelData;
     const previousPixeldata = pixelData.slice();
 
-    console.log(labelmap3D.activeSegmentIndex);
     const operationData = {
       points: data.handles.points,
       pixelData,
@@ -1218,7 +1217,9 @@ export default class FreehandRoiTool extends BaseAnnotationTool {
     // Invalidate the brush tool data so it is redrawn
     setters.updateSegmentsOnLabelmap2D(labelmap2D);
     clearToolState(element, 'FreehandRoi');
-    external.cornerstone.updateImage(element);
+    setTimeout(() => {
+      external.cornerstone.updateImage(element);
+    }, 250);
   }
 
   /**

@@ -276,10 +276,16 @@
         // event.detail
       );
     };
-    element.addEventListener(EVENTS.MEASUREMENT_ADDED, log);
-    element.addEventListener(EVENTS.MEASUREMENT_MODIFIED, log);
-    element.addEventListener(EVENTS.MEASUREMENT_COMPLETED, log);
-    element.addEventListener(EVENTS.MEASUREMENT_REMOVED, log);
+    const log2 = evt => { console.log(evt); };
+    element.addEventListener(EVENTS.MEASUREMENT_ADDED, log2);
+    element.addEventListener(EVENTS.MEASUREMENT_MODIFIED, log2);
+    element.addEventListener(EVENTS.MEASUREMENT_COMPLETED, log2);
+    element.addEventListener(EVENTS.MEASUREMENT_REMOVED, log2);
+    element.addEventListener(EVENTS.LABELMAP_MODIFIED, log2);
+    element.addEventListener(EVENTS.MOUSE_DOWN, log2);
+    element.addEventListener(EVENTS.MOUSE_UP, log2);
+    element.addEventListener(EVENTS.MOUSE_CLICK, log2);
+    element.addEventListener('cornerstonetoolsbrushcanstatistics', log2);
   });
 
   // Iterate over all tool-category links

@@ -30,6 +30,7 @@ export default class BrushCanTool extends BaseBrushTool {
      * fill: adjacent | all
      * sample: average
      * slices: single | multi
+     * complexity: max execution time in seconds
      */
     this._options = {
       fill: 'adjacent',
@@ -37,6 +38,8 @@ export default class BrushCanTool extends BaseBrushTool {
       slices: 'single',
       min: null,
       max: null,
+      threshold: 1,
+      complexity: 4,
     };
     this._calculating = false;
     this.touchDragCallback = this._paint.bind(this);
@@ -126,16 +129,43 @@ export default class BrushCanTool extends BaseBrushTool {
       average = sum / pointerArray.length;
     }
     median = this.median(stat);
-    console.log(stat);
-    console.log(`Min: ${allowedMin}`);
-    console.log(`Max: ${allowedMax}`);
-    console.log(`Avg: ${average}`);
-    console.log(`Median: ${median}`);
+    // Console.log(stat);
+    // console.log(`Min: ${allowedMin}`);
+    // console.log(`Max: ${allowedMax}`);
+    // console.log(`Avg: ${average}`);
+    // console.log(`Median: ${median}`);
+    const allowedMinThr =
+      median - (median - allowedMin) * this._options.threshold;
+    const allowedMaxThr =
+      median + (allowedMax - median) * this._options.threshold;
+
+    external.cornerstone.triggerEvent(
+      element,
+      'cornerstonetoolsbrushcanstatistics',
+      {
+        allowedMin,
+        allowedMax,
+        allowedMinThr,
+        allowedMaxThr,
+        average,
+        median,
+        threshold: this._options.threshold,
+        complexity: this._options.complexity,
+      }
+    );
+    allowedMin = allowedMinThr;
+    allowedMax = allowedMaxThr;
 
     pointerArray = [];
     let q = 0;
 
-    while (q < 512 && adjacent.length) {
+    const startTime = Date.now();
+
+    while (
+      q < 512 &&
+      adjacent.length &&
+      Date.now() - startTime < this._options.complexity * 1000
+    ) {
       q++;
       lastLoop = [];
       for (let i = 0; i < adjacent.length; i++) {
