@@ -40,6 +40,10 @@ export default class BrushCanTool extends BaseBrushTool {
       max: null,
       threshold: 1,
       complexity: 4,
+      lutMin: null,
+      lutMax: null,
+      lutMinPercent: 0,
+      lutMaxPercent: 100,
     };
     this._calculating = false;
     this.touchDragCallback = this._paint.bind(this);
@@ -155,6 +159,20 @@ export default class BrushCanTool extends BaseBrushTool {
     );
     allowedMin = allowedMinThr;
     allowedMax = allowedMaxThr;
+
+    if (
+      this._options.lutMinPercent !== 0 ||
+      this._options.lutMaxPercent !== 100
+    ) {
+      const diffVals = allowedMax - allowedMin;
+
+      allowedMin = Math.round(
+        allowedMin + diffVals * (this._options.lutMinPercent / 100)
+      );
+      allowedMax = Math.round(
+        allowedMin + diffVals * (this._options.lutMaxPercent / 100)
+      );
+    }
 
     pointerArray = [];
     let q = 0;
