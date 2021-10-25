@@ -1,7 +1,7 @@
 import ARRAY_TYPES from './arrayTypes';
 import { getModule } from '../../index.js';
 
-const { UINT_16_ARRAY, FLOAT_32_ARRAY } = ARRAY_TYPES;
+const { UINT_8_ARRAY, UINT_16_ARRAY, FLOAT_32_ARRAY } = ARRAY_TYPES;
 
 /**
  * AddLabelmap3D - Adds a `Labelmap3D` object to the `BrushStackState` object.
@@ -16,9 +16,12 @@ export default function addLabelmap3D(brushStackState, labelmapIndex, size) {
   let bytesPerVoxel;
 
   switch (configuration.arrayType) {
+    case UINT_8_ARRAY:
+      bytesPerVoxel = 1;
+      break;
+
     case UINT_16_ARRAY:
       bytesPerVoxel = 2;
-
       break;
 
     case FLOAT_32_ARRAY:

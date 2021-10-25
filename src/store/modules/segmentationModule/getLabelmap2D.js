@@ -9,7 +9,7 @@ import ARRAY_TYPES from './arrayTypes';
 import { getModule } from '../../index.js';
 import { getLogger } from '../../../util/logger';
 
-const { UINT_16_ARRAY, FLOAT_32_ARRAY } = ARRAY_TYPES;
+const { UINT_8_ARRAY, UINT_16_ARRAY, FLOAT_32_ARRAY } = ARRAY_TYPES;
 
 const logger = getLogger('store:modules:segmentationModule:getLabelmap2D');
 
@@ -134,13 +134,20 @@ export function getLabelmap2DByImageIdIndex(
     let pixelData;
 
     switch (configuration.arrayType) {
+      case UINT_8_ARRAY:
+        pixelData = new Uint8Array(
+          labelmap3D.buffer,
+          Number(elementOffset), // 2 bytes/voxel
+          sliceLength
+        );
+        break;
+
       case UINT_16_ARRAY:
         pixelData = new Uint16Array(
           labelmap3D.buffer,
           elementOffset * 2, // 2 bytes/voxel
           sliceLength
         );
-
         break;
 
       case FLOAT_32_ARRAY:

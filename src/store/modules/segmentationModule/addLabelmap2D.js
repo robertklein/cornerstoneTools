@@ -1,7 +1,7 @@
 import ARRAY_TYPES from './arrayTypes';
 import { getModule } from '../../index.js';
 
-const { UINT_16_ARRAY, FLOAT_32_ARRAY } = ARRAY_TYPES;
+const { UINT_8_ARRAY, UINT_16_ARRAY, FLOAT_32_ARRAY } = ARRAY_TYPES;
 
 /**
  * Adds a `Labelmap2D` view of one frame of a `Labelmap3D`.
@@ -28,13 +28,20 @@ export default function addLabelmap2D(
   let pixelData;
 
   switch (configuration.arrayType) {
+    case UINT_8_ARRAY:
+      pixelData = new Uint8Array(
+        brushStackState.labelmaps3D[labelmapIndex].buffer,
+        elementOffset, // 2 bytes/voxel
+        sliceLength
+      );
+      break;
+
     case UINT_16_ARRAY:
       pixelData = new Uint16Array(
         brushStackState.labelmaps3D[labelmapIndex].buffer,
         elementOffset * 2, // 2 bytes/voxel
         sliceLength
       );
-
       break;
 
     case FLOAT_32_ARRAY:

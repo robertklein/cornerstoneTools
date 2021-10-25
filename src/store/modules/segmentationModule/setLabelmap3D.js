@@ -6,7 +6,7 @@ import { triggerLabelmapModifiedEvent } from '../../../util/segmentation';
 import ARRAY_TYPES from './arrayTypes';
 import { getModule } from '../../index.js';
 
-const { UINT_16_ARRAY, FLOAT_32_ARRAY } = ARRAY_TYPES;
+const { UINT_8_ARRAY, UINT_16_ARRAY, FLOAT_32_ARRAY } = ARRAY_TYPES;
 
 /**
  * Takes a 16-bit encoded `ArrayBuffer` and stores it as a `Labelmap3D` for the
@@ -109,13 +109,20 @@ function setLabelmap3DByFirstImageId(
     let pixelData;
 
     switch (configuration.arrayType) {
+      case UINT_8_ARRAY:
+        pixelData = new Uint16Array(
+          buffer,
+          slicelengthInBytes * i,
+          slicelengthInBytes
+        );
+        break;
+
       case UINT_16_ARRAY:
         pixelData = new Uint16Array(
           buffer,
           slicelengthInBytes * i, // 2 bytes/voxel
           slicelengthInBytes / 2
         );
-
         break;
 
       case FLOAT_32_ARRAY:

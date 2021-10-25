@@ -1,6 +1,6 @@
 import ARRAY_TYPES from './arrayTypes';
 
-const { UINT_16_ARRAY } = ARRAY_TYPES;
+const { UINT_8_ARRAY } = ARRAY_TYPES;
 
 // Segmentation module configuration.
 const defaultConfiguration = {
@@ -17,7 +17,7 @@ const defaultConfiguration = {
   outlineWidth: 3,
   storeHistory: true,
   segmentsPerLabelmap: 65535, // Max is 65535 due to using 16-bit Unsigned ints.
-  arrayType: UINT_16_ARRAY,
+  arrayType: UINT_8_ARRAY,
 };
 
 export default defaultConfiguration;

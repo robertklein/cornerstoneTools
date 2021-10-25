@@ -5,7 +5,7 @@ import state from './state';
 import ARRAY_TYPES from './arrayTypes';
 import { getModule } from '../../index.js';
 
-const { UINT_16_ARRAY, FLOAT_32_ARRAY } = ARRAY_TYPES;
+const { UINT_8_ARRAY, UINT_16_ARRAY, FLOAT_32_ARRAY } = ARRAY_TYPES;
 
 /**
  * GetLabelmapBuffers - Returns the `buffer` of each `Labelmap3D` associated
@@ -38,10 +38,14 @@ function getLabelmapBuffers(elementOrEnabledElementUID, labelmapIndex) {
   let bytesPerVoxel;
 
   switch (configuration.arrayType) {
+    case UINT_8_ARRAY:
+      type = 'Uint8Array';
+      bytesPerVoxel = '1';
+      break;
+
     case UINT_16_ARRAY:
       type = 'Uint16Array';
       bytesPerVoxel = '2';
-
       break;
 
     case FLOAT_32_ARRAY:
