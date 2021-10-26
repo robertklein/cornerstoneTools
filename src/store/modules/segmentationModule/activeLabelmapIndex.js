@@ -53,7 +53,8 @@ function setActiveLabelmapIndex(elementOrEnabledElementUID, labelmapIndex = 0) {
   const enabledElement = cornerstone.getEnabledElement(element);
   const { rows, columns } = enabledElement.image;
   const numberOfFrames = stackData.imageIds.length;
-  const size = rows * columns * numberOfFrames;
+  // @bufferOneSlice
+  const size = (rows * columns * numberOfFrames) / numberOfFrames;
   const firstImageId = stackData.imageIds[0];
 
   let brushStackState = state.series[firstImageId];

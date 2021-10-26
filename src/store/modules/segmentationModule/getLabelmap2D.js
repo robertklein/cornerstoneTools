@@ -58,7 +58,8 @@ export default function getLabelmap2D(elementOrEnabledElementUID) {
     activeLabelmapIndex = brushStackState.activeLabelmapIndex;
 
     if (!brushStackState.labelmaps3D[activeLabelmapIndex]) {
-      const size = rows * columns * numberOfFrames;
+      // @bufferOneSlice
+      const size = (rows * columns * numberOfFrames) / numberOfFrames;
 
       addLabelmap3D(brushStackState, activeLabelmapIndex, size);
     }
@@ -86,7 +87,8 @@ export default function getLabelmap2D(elementOrEnabledElementUID) {
 
     brushStackState = state.series[firstImageId];
 
-    const size = rows * columns * numberOfFrames;
+    // @oneSliceBuffer
+    const size = (rows * columns * numberOfFrames) / numberOfFrames;
 
     addLabelmap3D(brushStackState, activeLabelmapIndex, size);
 

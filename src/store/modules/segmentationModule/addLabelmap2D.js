@@ -22,8 +22,8 @@ export default function addLabelmap2D(
 ) {
   const { configuration } = getModule('segmentation');
   const sliceLength = rows * columns;
-
-  const elementOffset = sliceLength * imageIdIndex;
+  // @bufferOneSlice
+  const elementOffset = sliceLength * imageIdIndex * 0;
 
   let pixelData;
 

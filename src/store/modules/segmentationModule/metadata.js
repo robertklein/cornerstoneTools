@@ -103,7 +103,8 @@ function setMetadata(
 
     const { rows, columns } = enabledElement.image;
     const numberOfFrames = stackData.imageIds.length;
-    const size = rows * columns * numberOfFrames;
+    // @oneSliceBuffer
+    const size = (rows * columns * numberOfFrames) / numberOfFrames;
 
     addLabelmap3D(brushStackState, labelmapIndex, size);
   }
