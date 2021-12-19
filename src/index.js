@@ -86,6 +86,7 @@ import {
   LengthTool,
   ProbeTool,
   RectangleRoiTool,
+  WindowAreaTool,
   TextMarkerTool,
 } from './tools/annotation/index.js';
 import {
@@ -225,6 +226,7 @@ const cornerstoneTools = {
   LengthTool,
   ProbeTool,
   RectangleRoiTool,
+  WindowAreaTool,
   TextMarkerTool,
   // ~ Segmentation Tools
   BrushTool,
@@ -335,6 +337,7 @@ export {
   LengthTool,
   ProbeTool,
   RectangleRoiTool,
+  WindowAreaTool,
   TextMarkerTool,
   // ~ Segmentation Tools
   BrushTool,
