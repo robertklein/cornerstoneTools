@@ -92,6 +92,7 @@ import {
 import {
   BrushTool,
   BrushCanTool,
+  BrushIslandTool,
   SphericalBrushTool,
   FreehandScissorsTool,
   RectangleScissorsTool,
@@ -231,6 +232,7 @@ const cornerstoneTools = {
   // ~ Segmentation Tools
   BrushTool,
   BrushCanTool,
+  BrushIslandTool,
   SphericalBrushTool,
   RectangleScissorsTool,
   FreehandScissorsTool,
@@ -342,6 +344,7 @@ export {
   // ~ Segmentation Tools
   BrushTool,
   BrushCanTool,
+  BrushIslandTool,
   SphericalBrushTool,
   RectangleScissorsTool,
   FreehandScissorsTool,
