@@ -1,5 +1,9 @@
 import external from '../../externalModules.js';
 import { BaseBrushTool } from '../base';
+import { getModule } from '../../store/index.js';
+import { getEllipse } from '../../util/segmentation/index.js';
+
+const segmentationModule = getModule('segmentation');
 
 /**
  * @public
@@ -30,11 +34,34 @@ export default class BrushIslandTool extends BaseBrushTool {
    * @returns {void}
    */
   _paint(evt) {
+    const { configuration } = segmentationModule;
     const eventData = evt.detail;
     const element = eventData.element;
+    const {
+      rows,
+      columns,
+      columnPixelSpacing,
+      rowPixelSpacing,
+    } = eventData.image;
+    const { x, y } = eventData.currentPoints.image;
+
+    if (x < 0 || x > columns || y < 0 || y > rows) {
+      return;
+    }
+
+    const radius = configuration.radius;
+    let pointerArray = getEllipse(
+      radius,
+      rows,
+      columns,
+      x,
+      y,
+      columnPixelSpacing,
+      rowPixelSpacing
+    );
 
     external.cornerstone.triggerEvent(element, 'cornerstonetoolsbrushisland', {
-      evt,
+      pointerArray,
     });
   }
 }
