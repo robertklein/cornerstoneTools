@@ -88,6 +88,11 @@ import {
   RectangleRoiTool,
   WindowAreaTool,
   TextMarkerTool,
+  MArrowAnnotateTool,
+  MCircleRoiTool,
+  MEllipticalRoiTool,
+  MProbeTool,
+  MRectangleRoiTool,
 } from './tools/annotation/index.js';
 import {
   BrushTool,
@@ -229,6 +234,11 @@ const cornerstoneTools = {
   RectangleRoiTool,
   WindowAreaTool,
   TextMarkerTool,
+  MArrowAnnotateTool,
+  MCircleRoiTool,
+  MEllipticalRoiTool,
+  MProbeTool,
+  MRectangleRoiTool,
   // ~ Segmentation Tools
   BrushTool,
   BrushCanTool,
@@ -341,6 +351,11 @@ export {
   RectangleRoiTool,
   WindowAreaTool,
   TextMarkerTool,
+  MArrowAnnotateTool,
+  MCircleRoiTool,
+  MEllipticalRoiTool,
+  MProbeTool,
+  MRectangleRoiTool,
   // ~ Segmentation Tools
   BrushTool,
   BrushCanTool,
