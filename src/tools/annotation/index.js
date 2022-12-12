@@ -10,6 +10,11 @@ import ProbeTool from './ProbeTool.js';
 import RectangleRoiTool from './RectangleRoiTool.js';
 import WindowAreaTool from './WindowAreaTool.js';
 import TextMarkerTool from './TextMarkerTool.js';
+import MArrowAnnotateTool from './MArrowAnnotateTool.js';
+import MCircleRoiTool from './MCircleRoiTool.js';
+import MEllipticalRoiTool from './MEllipticalRoiTool.js';
+import MProbeTool from './MProbeTool.js';
+import MRectangleRoiTool from './MRectangleRoiTool.js';
 
 // Named Exports
 export { default as AngleTool } from './AngleTool.js';
@@ -24,6 +29,11 @@ export { default as ProbeTool } from './ProbeTool.js';
 export { default as RectangleRoiTool } from './RectangleRoiTool.js';
 export { default as WindowAreaTool } from './WindowAreaTool.js';
 export { default as TextMarkerTool } from './TextMarkerTool.js';
+export { default as MArrowAnnotateTool } from './MArrowAnnotateTool.js';
+export { default as MCircleRoiTool } from './MCircleRoiTool.js';
+export { default as MEllipticalRoiTool } from './MEllipticalRoiTool.js';
+export { default as MProbeTool } from './MProbeTool.js';
+export { default as MRectangleRoiTool } from './MRectangleRoiTool.js';
 
 // Namespace, default export
 export default {
@@ -39,4 +49,9 @@ export default {
   RectangleRoiTool,
   WindowAreaTool,
   TextMarkerTool,
+  MArrowAnnotateTool,
+  MCircleRoiTool,
+  MEllipticalRoiTool,
+  MProbeTool,
+  MRectangleRoiTool,
 };

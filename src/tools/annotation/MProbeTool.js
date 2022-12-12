@@ -6,7 +6,7 @@ import textStyle from '../../stateManagement/textStyle.js';
 import toolColors from '../../stateManagement/toolColors.js';
 // Drawing
 import { getNewContext, draw } from '../../drawing/index.js';
-import drawTextBox from '../../drawing/drawTextBox.js';
+import drawTextBox from '../../drawing/mdrawTextBox.js';
 import drawHandles from '../../drawing/drawHandles.js';
 // Utilities
 import getRGBPixels from '../../util/getRGBPixels.js';
@@ -16,20 +16,20 @@ import { getLogger } from '../../util/logger.js';
 import throttle from '../../util/throttle';
 import { getModule } from '../../store/index';
 
-const logger = getLogger('tools:annotation:ProbeTool');
+const logger = getLogger('tools:annotation:MProbeTool');
 
 /**
  * @public
- * @class ProbeTool
+ * @class MProbeTool
  * @memberof Tools.Annotation
  * @classdesc Tool which provides a probe of the image data at the
  * desired position.
  * @extends Tools.Base.BaseAnnotationTool
  */
-export default class ProbeTool extends BaseAnnotationTool {
+export default class MProbeTool extends BaseAnnotationTool {
   constructor(props = {}) {
     const defaultProps = {
-      name: 'Probe',
+      name: 'MProbe',
       supportedInteractionTypes: ['Mouse', 'Touch'],
       svgCursor: probeCursor,
       configuration: {
@@ -66,6 +66,7 @@ export default class ProbeTool extends BaseAnnotationTool {
           y: eventData.currentPoints.image.y,
           highlight: true,
           active: true,
+          id: getModule('globalConfiguration').configuration.mdntAnnotToolIndex,
         },
       },
     };
@@ -206,13 +207,13 @@ export default class ProbeTool extends BaseAnnotationTool {
             coords
           );
 
-          // drawTextBox(
-          //   context,
-          //   str,
-          //   textCoords.x,
-          //   textCoords.y + fontHeight + 5,
-          //   color
-          // );
+          drawTextBox(
+            context,
+            data.handles.end.id,
+            textCoords.x,
+            textCoords.y + fontHeight + 5,
+            color
+          );
           // drawTextBox(context, text, textCoords.x, textCoords.y, color);
         }
       });
