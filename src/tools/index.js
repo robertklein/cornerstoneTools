@@ -2,6 +2,7 @@ import CrosshairsTool from './CrosshairsTool.js';
 import DoubleTapFitToWindowTool from './DoubleTapFitToWindowTool.js';
 import DragProbeTool from './DragProbeTool.js';
 import EraserTool from './EraserTool.js';
+import MEraserTool from './MEraserTool.js';
 import FreehandRoiSculptorTool from './FreehandRoiSculptorTool.js';
 import MagnifyTool from './MagnifyTool.js';
 import OverlayTool from './OverlayTool.js';
@@ -27,6 +28,7 @@ export {
   DoubleTapFitToWindowTool,
   DragProbeTool,
   EraserTool,
+  MEraserTool,
   FreehandRoiSculptorTool,
   MagnifyTool,
   OverlayTool,
@@ -53,6 +55,7 @@ export default {
   DoubleTapFitToWindowTool,
   DragProbeTool,
   EraserTool,
+  MEraserTool,
   FreehandRoiSculptorTool,
   MagnifyTool,
   OverlayTool,
