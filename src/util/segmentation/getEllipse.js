@@ -48,12 +48,12 @@ export default function getCircle(
     for (let x = -rx; x <= rx; x++) {
       const xCoord = x0 + x;
 
-      if (xCoord >= columns || xCoord < 0) {
+      if (xCoord >= columns || xCoord <= 0) {
         continue;
       }
       const res = ry * ry * x * x + rx * rx * y * y - rx * rx * ry * ry;
 
-      if (res <= 0) {
+      if (res < 0) {
         circleArray[index++] = [x0 + x, y0 + y];
       }
     }
