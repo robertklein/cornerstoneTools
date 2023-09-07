@@ -15,6 +15,7 @@ import MCircleRoiTool from './MCircleRoiTool.js';
 import MEllipticalRoiTool from './MEllipticalRoiTool.js';
 import MProbeTool from './MProbeTool.js';
 import MRectangleRoiTool from './MRectangleRoiTool.js';
+import SAPointTool from './SAPointTool.js';
 
 // Named Exports
 export { default as AngleTool } from './AngleTool.js';
@@ -34,6 +35,7 @@ export { default as MCircleRoiTool } from './MCircleRoiTool.js';
 export { default as MEllipticalRoiTool } from './MEllipticalRoiTool.js';
 export { default as MProbeTool } from './MProbeTool.js';
 export { default as MRectangleRoiTool } from './MRectangleRoiTool.js';
+export { default as SAPointTool } from './SAPointTool.js';
 
 // Namespace, default export
 export default {
@@ -54,4 +56,5 @@ export default {
   MEllipticalRoiTool,
   MProbeTool,
   MRectangleRoiTool,
+  SAPointTool,
 };

@@ -93,6 +93,7 @@ import {
   MEllipticalRoiTool,
   MProbeTool,
   MRectangleRoiTool,
+  SAPointTool,
 } from './tools/annotation/index.js';
 import {
   BrushTool,
@@ -240,6 +241,7 @@ const cornerstoneTools = {
   MEllipticalRoiTool,
   MProbeTool,
   MRectangleRoiTool,
+  SAPointTool,
   // ~ Segmentation Tools
   BrushTool,
   BrushCanTool,
@@ -358,6 +360,7 @@ export {
   MEllipticalRoiTool,
   MProbeTool,
   MRectangleRoiTool,
+  SAPointTool,
   // ~ Segmentation Tools
   BrushTool,
   BrushCanTool,

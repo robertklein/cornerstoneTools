@@ -82,7 +82,7 @@ export default class BrushTool extends BaseBrushTool {
     const xy = external.cornerstone.pixelToCanvas(element, { x, y });
     const ctx = element.firstChild.getContext('2d');
     ctx.beginPath();
-    ctx.strokeStyle = '#b3ff0077';
+    ctx.strokeStyle = '#b3ff00';
     ctx.arc(xy.x, xy.y, radius * scale, 0, 2 * Math.PI);
     ctx.stroke();
 
