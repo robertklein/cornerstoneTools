@@ -1,4 +1,5 @@
 import external from './../../externalModules.js';
+import EVENTS from '../../events.js';
 import { BaseBrushTool } from '../base';
 import { getModule } from './../../store/index.js';
 import { drawBrushPixels, getEllipse } from '../../util/segmentation/index.js';
@@ -256,16 +257,30 @@ export default class BrushTool extends BaseBrushTool {
             merge2.push([xint, y]);
           }
         }
-        timing.push(Date.now());
+        // timing.push(Date.now());
+        let changedData = [];
+        const previousData = labelmap2D.pixelData.slice();
+
         drawBrushPixels(
           merge2,
           labelmap2D.pixelData,
           labelmap3D.activeSegmentIndex,
           columns,
-          shouldErase
+          shouldErase,
+          changedData
+        );
+        external.cornerstone.triggerEvent(
+          evt.detail.element,
+          EVENTS.SEGMENTATION_CHANGED,
+          {
+            changedData,
+            shouldErase,
+            previousData,
+            currentData: labelmap2D.pixelData,
+          }
         );
         external.cornerstone.updateImage(evt.detail.element);
-        timing.push(Date.now());
+        // timing.push(Date.now());
 
         // console.log(timing[2] - timing[0], timing[2] - timing[1]);
         // console.log(

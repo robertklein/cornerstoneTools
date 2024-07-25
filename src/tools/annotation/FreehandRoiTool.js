@@ -1202,6 +1202,8 @@ export default class FreehandRoiTool extends BaseAnnotationTool {
       segmentationMixinType: `freehandSegmentationMixin`,
     };
 
+    const previousData = labelmap2D.pixelData.slice();
+
     fillInsideFreehand(
       { detail: { image: external.cornerstone.getImage(element) } },
       operationData
@@ -1218,6 +1220,12 @@ export default class FreehandRoiTool extends BaseAnnotationTool {
     setters.updateSegmentsOnLabelmap2D(labelmap2D);
     clearToolState(element, 'FreehandRoi');
     setTimeout(() => {
+      external.cornerstone.triggerEvent(element, EVENTS.SEGMENTATION_CHANGED, {
+        changedData: operation.diff,
+        shouldErase: false,
+        previousData,
+        currentData: labelmap2D.pixelData,
+      });
       external.cornerstone.updateImage(element);
     }, 250);
   }

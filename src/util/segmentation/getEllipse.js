@@ -36,8 +36,6 @@ export default function getCircle(
     Math.min(1, columnPixelSpacing / rowPixelSpacing) * radius
   );
 
-  console.log(radius, rx, ry);
-
   for (let y = -ry; y <= ry; y++) {
     const yCoord = y0 + y;
 

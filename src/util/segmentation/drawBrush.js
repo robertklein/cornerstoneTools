@@ -15,11 +15,13 @@ function drawBrushPixels(
   pixelData,
   segmentIndex,
   columns,
-  shouldErase = false
+  shouldErase = false,
+  changedData
 ) {
   const getPixelIndex = (x, y) => y * columns + x;
 
   pointerArray.forEach(point => {
+    changedData.push(point);
     const spIndex = getPixelIndex(...point);
 
     if (shouldErase) {
