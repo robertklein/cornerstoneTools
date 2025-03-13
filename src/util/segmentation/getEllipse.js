@@ -22,37 +22,47 @@ export default function getCircle(
   const x0 = Math.floor(xCoord);
   const y0 = Math.floor(yCoord);
 
-  if (radius === 1) {
-    return [[x0, y0]];
+  if (radius <= 1) {
+    return [];
   }
 
   const circleArray = [];
   let index = 0;
 
-  const rx = Math.round(
+  const wi = Math.ceil(
     Math.min(1, rowPixelSpacing / columnPixelSpacing) * radius
   );
-  const ry = Math.round(
+  const hi = Math.ceil(
     Math.min(1, columnPixelSpacing / rowPixelSpacing) * radius
   );
 
-  for (let y = -ry; y <= ry; y++) {
-    const yCoord = y0 + y;
+  const r =
+    radius *
+    (columnPixelSpacing < rowPixelSpacing
+      ? columnPixelSpacing
+      : rowPixelSpacing);
+  const r2 = r * r;
 
-    if (yCoord > rows || yCoord < 0) {
+  for (let j = -hi; j <= hi; j++) {
+    const yi = y0 + j;
+
+    if (yi > rows || yi < 0) {
       continue;
     }
 
-    for (let x = -rx; x <= rx; x++) {
-      const xCoord = x0 + x;
+    for (let i = -wi; i <= wi; i++) {
+      const xi = x0 + i;
 
-      if (xCoord >= columns || xCoord <= 0) {
+      if (xi >= columns || xi < 0) {
         continue;
       }
-      const res = ry * ry * x * x + rx * rx * y * y - rx * rx * ry * ry;
 
-      if (res < 0) {
-        circleArray[index++] = [x0 + x, y0 + y];
+      const x = (xi + 0.5 - xCoord) * columnPixelSpacing;
+      const y = (yi + 0.5 - yCoord) * rowPixelSpacing;
+      const h2 = x * x + y * y;
+
+      if (h2 < r2) {
+        circleArray[index++] = [xi, yi];
       }
     }
   }

@@ -49,30 +49,7 @@ export default class BrushTool extends BaseBrushTool {
     } = eventData.image;
     const { x, y } = eventData.currentPoints.image;
 
-    if (x < 0 || x > columns || y < 0 || y > rows) {
-      return;
-    }
-
     const radius = configuration.radius;
-    // const pointerArray = getEllipse(
-    //   radius,
-    //   rows,
-    //   columns,
-    //   x,
-    //   y,
-    //   columnPixelSpacing,
-    //   rowPixelSpacing
-    // );
-    // const { labelmap2D, labelmap3D, shouldErase } = this.paintEventData;
-    // // Draw / Erase the active color.
-    // drawBrushPixels(
-    //   pointerArray,
-    //   labelmap2D.pixelData,
-    //   labelmap3D.activeSegmentIndex,
-    //   columns,
-    //   shouldErase
-    // );
-    // external.cornerstone.updateImage(evt.detail.element);
 
     const s = segmentationModule;
     if (typeof s.bras === 'undefined')
@@ -130,8 +107,8 @@ export default class BrushTool extends BaseBrushTool {
           }
         },
         addUnique(x, y) {
-          x = Math.round(x);
-          y = Math.round(y);
+          x = Math.floor(/*round*/ x);
+          y = Math.floor(/*round*/ y);
           let included = false;
           for (
             let i = Math.max(0, x - this.ignoreAdj);
@@ -155,12 +132,6 @@ export default class BrushTool extends BaseBrushTool {
           }
           this.ignored++;
           return false;
-          // if (!this.items[x].includes(y)) {
-          //   this.items[x].push(y);
-          //   return true;
-          // }
-          // this.ignored++;
-          // return false;
         },
         getTotal() {
           let c = 0;
@@ -169,22 +140,33 @@ export default class BrushTool extends BaseBrushTool {
           }
           return c;
         },
-        fill(px, py, cx, cy) {
-          const dx = cx - px;
-          const dy = cy - py;
-          const sq = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-          const step = s.bras.radius / 2;
-          const intCircles = [];
-          if (sq > step) {
-            const cntSteps = Math.floor(sq / step);
-            for (let i = 1; i < cntSteps + 1; i++) {
-              const itp = i / (cntSteps + 1);
-              const idx = itp * dx;
-              const idy = itp * dy;
-              intCircles.push([px + idx, py + idy]);
-            }
+        getLine(px, py, cx, cy) {
+          // DDA
+          let dx = cx - px;
+          let dy = cy - py;
+
+          let step;
+          if (Math.abs(dx) >= Math.abs(dy)) {
+            step = Math.abs(dx);
+          } else {
+            step = Math.abs(dy);
           }
-          // console.log(px, py, cx, cy, sq, step, intCircles);
+
+          dx = dx / step;
+          dy = dy / step;
+
+          let x = px;
+          let y = py;
+          let i = 0;
+          const intCircles = [];
+
+          while (i <= step) {
+            intCircles.push([Math.floor(x), Math.floor(y)]);
+            x = x + dx;
+            y = y + dy;
+            i = i + 1;
+          }
+
           return intCircles;
         },
       };
@@ -195,62 +177,53 @@ export default class BrushTool extends BaseBrushTool {
         cindo.reset();
         indo.reset();
         const merge2 = [];
-        for (let i in s.bras.stack) {
-          const one = s.bras.stack[i];
-          if (cindo.addUnique(one.x, one.y)) {
-            if (i > 0) {
-              const pOne = s.bras.stack[i - 1];
-              const interpolatedCircles = cindo.fill(
-                pOne.x,
-                pOne.y,
-                one.x,
-                one.y
-              );
-              for (let ic of interpolatedCircles) {
-                // const pointerArray = getCircle(
-                //   s.bras.radius,
-                //   rows,
-                //   columns,
-                //   ic[0],
-                //   ic[1]
-                // );
-                const pointerArray = getEllipse(
-                  s.bras.radius,
-                  rows,
-                  columns,
-                  ic[0],
-                  ic[1],
-                  columnPixelSpacing,
-                  rowPixelSpacing
-                );
-                for (let j of pointerArray) {
-                  indo.addUnique(j[0], j[1]);
-                }
-              }
-              // return false;
-            }
-            // const pointerArray = getCircle(
-            //   s.bras.radius,
-            //   rows,
-            //   columns,
-            //   one.x,
-            //   one.y
-            // );
+        let path = [];
+        for (let i = 0; i < s.bras.stack.length; ++i) {
+          if (i < 1) {
+            const first = s.bras.stack[0];
+            path.push([[first.x, first.y]]);
+
+            continue;
+          }
+
+          const to = s.bras.stack[i];
+          const from = s.bras.stack[i - 1];
+
+          path.push(cindo.getLine(from.x, from.y, to.x, to.y));
+        }
+
+        for (let segment of path) {
+          for (let point of segment) {
+            const x = point[0];
+            const y = point[1];
+            const xi = Math.floor(x);
+            const yi = Math.floor(y);
             const pointerArray = getEllipse(
               s.bras.radius,
               rows,
               columns,
-              one.x,
-              one.y,
+              x,
+              y,
               columnPixelSpacing,
               rowPixelSpacing
             );
-            for (let j of pointerArray) {
-              // const index = j[0] + j[1] * columns;
-              indo.addUnique(j[0], j[1]);
+
+            for (let p of pointerArray) {
+              if (p[0] >= 0 && p[0] < columns && p[1] >= 0 && p[1] < rows) {
+                indo.addUnique(p[0], p[1]);
+              }
+            }
+
+            if (x >= 0 && x < columns && y >= 0 && y < rows) {
+              try {
+                indo.addUnique(xi, yi);
+              } catch (e) {
+                console.log(point, x, y);
+              }
             }
           }
         }
+
         for (let x in indo.items) {
           const xint = parseInt(x);
           for (let y of indo.items[x]) {
@@ -293,41 +266,5 @@ export default class BrushTool extends BaseBrushTool {
     } finally {
       s.bras = { radius: null, scale: null, stack: [] };
     }
-
-    // _paint(evt) {
-    //   const { configuration } = segmentationModule;
-    //   const eventData = evt.detail;
-    //   const element = eventData.element;
-    //   const {
-    //     rows,
-    //     columns,
-    //     columnPixelSpacing,
-    //     rowPixelSpacing,
-    //   } = eventData.image;
-    //   const { x, y } = eventData.currentPoints.image;
-    //   if (x < 0 || x > columns || y < 0 || y > rows) {
-    //     return;
-    //   }
-    //   const radius = configuration.radius;
-    //   const pointerArray = getEllipse(
-    //     radius,
-    //     rows,
-    //     columns,
-    //     x,
-    //     y,
-    //     columnPixelSpacing,
-    //     rowPixelSpacing
-    //   );
-    //   const { labelmap2D, labelmap3D, shouldErase } = this.paintEventData;
-    //   // Draw / Erase the active color.
-    //   drawBrushPixels(
-    //     pointerArray,
-    //     labelmap2D.pixelData,
-    //     labelmap3D.activeSegmentIndex,
-    //     columns,
-    //     shouldErase
-    //   );
-    //   external.cornerstone.updateImage(evt.detail.element);
-    // }
   }
 }
